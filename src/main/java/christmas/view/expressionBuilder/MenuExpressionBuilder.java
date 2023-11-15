@@ -15,7 +15,7 @@ public class MenuExpressionBuilder implements ExpressionBuilder {
 
     private final StringBuilder output;
 
-    public MenuExpressionBuilder menu(String menuName, int quantity) {
+    private MenuExpressionBuilder menu(String menuName, int quantity) {
         if (quantity != 0) {
             this.output.append(menuName).append(" ").append(quantity).append(QUANTITY_UNIT);
         }

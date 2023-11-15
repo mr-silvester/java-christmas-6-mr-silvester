@@ -2,6 +2,9 @@ package christmas.view.expressionBuilder;
 
 import christmas.view.outputView.OutputView;
 
+import java.util.List;
+import java.util.Map;
+
 public class BenefitExpressionBuilder implements ExpressionBuilder {
     private static final String UNDER_BAR = "_";
     private static final String MENU_AND_DISCOUNT_DELIMITER = ": ";
@@ -14,7 +17,7 @@ public class BenefitExpressionBuilder implements ExpressionBuilder {
     private final OutputView outputView;
     private final StringBuilder output;
 
-    public BenefitExpressionBuilder benefit(String benefitName, int discountAmount) {
+    private BenefitExpressionBuilder benefit(String benefitName, int discountAmount) {
         if (discountAmount != 0) {
             this.output.append(benefitName.replace(UNDER_BAR, " "))
                     .append(MENU_AND_DISCOUNT_DELIMITER)
@@ -23,6 +26,14 @@ public class BenefitExpressionBuilder implements ExpressionBuilder {
                     .append(MONEY_UNIT);
         }
         return this;
+    }
+
+    public void benefits(List<Map.Entry<String, Integer>> benefits) {
+        for (Map.Entry<String, Integer> benefit : benefits) {
+            benefit(benefit.getKey(), benefit.getValue()).and();
+        }
+
+        orNone().build();
     }
 
     public void badge(String badgeName) {
