@@ -9,9 +9,9 @@ public class BenefitExpressionBuilder implements ExpressionBuilder {
     private static final String UNDER_BAR = "_";
     private static final String MENU_AND_DISCOUNT_DELIMITER = ": ";
 
-    public BenefitExpressionBuilder(OutputView outputView) {
+    public BenefitExpressionBuilder(OutputView outputView, StringBuilder output) {
         this.outputView = outputView;
-        this.output = new StringBuilder();
+        this.output = output;
     }
 
     private final OutputView outputView;
@@ -28,38 +28,32 @@ public class BenefitExpressionBuilder implements ExpressionBuilder {
         return this;
     }
 
-    public void benefits(List<Map.Entry<String, Integer>> benefits) {
+    public BenefitExpressionBuilder benefits(List<Map.Entry<String, Integer>> benefits) {
+        if (benefits.size() == 0) {
+            this.output.append(NOTHING_TO_PRINT).append(NEWLINE);
+            return this;
+        }
+
         for (Map.Entry<String, Integer> benefit : benefits) {
             benefit(benefit.getKey(), benefit.getValue()).and();
         }
-
-        orNone().build();
+        return this;
     }
 
-    public void badge(String badgeName) {
+    public BenefitExpressionBuilder badge(String badgeName) {
         this.output.append(badgeName);
-        build();
-    }
-
-    public BenefitExpressionBuilder and() {
-        if (this.output.isEmpty()) {
-            return this;
-        }
-        if (!this.output.toString().endsWith(NEWLINE)) {
-            this.output.append(NEWLINE);
-        }
         return this;
     }
 
-    public BenefitExpressionBuilder orNone() {
-        if (this.output.toString().replace(NEWLINE, "").isEmpty()) {
-            this.output.setLength(0);
-            this.output.append(NOTHING_TO_PRINT);
-        }
-        return this;
+    public OutputView and() {
+        System.out.print(this.output);
+        this.output.setLength(0);
+        System.out.println();
+        return this.outputView;
     }
 
     public void build() {
-        this.outputView.merge(this.output).build();
+        System.out.println(this.output);
+        this.output.setLength(0);
     }
 }

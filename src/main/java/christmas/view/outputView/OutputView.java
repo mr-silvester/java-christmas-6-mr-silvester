@@ -19,19 +19,19 @@ public class OutputView {
     }
 
     public MenuExpressionBuilder menuListOf() {
-        return new MenuExpressionBuilder(this);
+        return new MenuExpressionBuilder(this, this.output);
     }
 
     public BenefitExpressionBuilder benefitListOf() {
-        return new BenefitExpressionBuilder(this);
+        return new BenefitExpressionBuilder(this, this.output);
     }
 
     public PriceExpressionBuilder price() {
-        return new PriceExpressionBuilder(this);
+        return new PriceExpressionBuilder(this, this.output);
     }
 
     public BenefitExpressionBuilder nameOf() {
-        return new BenefitExpressionBuilder(this);
+        return new BenefitExpressionBuilder(this, this.output);
     }
 
     public OutputView merge(StringBuilder output) {

@@ -15,9 +15,11 @@ public class MessageExpressionBuilder implements ExpressionBuilder {
         System.out.println(this.output.append("안녕하세요! 우테코 식당 12월 이벤트 플래너입니다."));
     }
 
-    public void previewEventBenefits(int date) {
-        this.output.append("12월 ").append(date).append("일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!");
-        build();
+    public MessageExpressionBuilder previewEventBenefits(int date) {
+        this.output.append("12월 ").append(date).append("일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!")
+                .append(NEWLINE)
+                .append(NEWLINE);
+        return this;
     }
 
     public MessageExpressionBuilder orderedMenus() {
@@ -57,9 +59,5 @@ public class MessageExpressionBuilder implements ExpressionBuilder {
 
     public OutputView and() {
         return this.outputView.merge(this.output);
-    }
-
-    public void build() {
-        this.outputView.merge(this.output).build();
     }
 }
