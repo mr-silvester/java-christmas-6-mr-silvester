@@ -232,7 +232,7 @@ class OrderTest {
         Order order = new Order(25, orderedMenus);
 
         // when
-        int result = order.getBenefit(benefit);
+        int result = order.getAmountOfBenefit(benefit);
 
         // then
         assertThat(result).isEqualTo(expectedResult);

@@ -26,9 +26,9 @@ public class ControllerImpl implements Controller {
         console.print().messageOf().beginning();
         Order order = createOrder();
         console.print().messageOf().previewEvent(order.getDay());
-        printOrderedMenus(order);
+        console.print().messageOf().orderedMenus().and().menuListOf().menus(order.getOrderedMenus());
         console.print().messageOf().priceBeforeDiscount().and().price().beforeDiscount(order.getPriceBeforeDiscount());
-        printBenefits(order);
+        console.print().messageOf().benefits().and().benefitListOf().benefits(order.getBenefits());
         console.print().messageOf().freebie().and().menuListOf().freebie(Benefit.FREEBIE.name(), order.isEligibleForFreebie());
         console.print().messageOf().priceOfTotalBenefits().and().price().ofTotalBenefits(order.getPriceOfTotalBenefits());
         console.print().messageOf().priceOfTotal().and().price().ofTotal(order.getPriceOfTotal());
@@ -58,28 +58,5 @@ public class ControllerImpl implements Controller {
         }
 
         return target;
-    }
-
-    private void printOrderedMenus(Order order) {
-        MenuExpressionBuilder menuExpressionBuilder =
-                console.print().messageOf().orderedMenus().and().menuListOf();
-
-        for (Menu menu : Menu.values()) {
-            menuExpressionBuilder.menu(menu.name(), order.getQuantityOf(menu)).and();
-        }
-
-        menuExpressionBuilder.build();
-    }
-
-
-    private void printBenefits(Order order) {
-        BenefitExpressionBuilder benefitExpressionBuilder =
-                console.print().messageOf().benefits().and().benefitListOf();
-
-        for (Benefit benefit : Benefit.values()) {
-            benefitExpressionBuilder.benefit(benefit.name(), order.getBenefit(benefit)).and();
-        }
-
-        benefitExpressionBuilder.orNone().build();
     }
 }

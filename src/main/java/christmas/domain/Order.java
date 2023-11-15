@@ -9,6 +9,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Order {
     private static final int THIS_YEAR = 2023;
@@ -17,7 +18,7 @@ public class Order {
 
     public Order(int today, Map<Menu, Integer> orderedMenus) {
         this.today = today;
-        this.orderedMenus = orderedMenus;
+        this.orderedMenus = Map.copyOf(orderedMenus);
         init();
     }
 
@@ -29,12 +30,17 @@ public class Order {
         return this.today;
     }
 
+    @Deprecated
     public int getQuantityOf(Menu menu) {
         if (orderedMenus.containsKey(menu)) {
             return orderedMenus.get(menu);
         }
 
         return 0;
+    }
+
+    public List<Map.Entry<String, Integer>> getOrderedMenus() {
+        return toEntryList(orderedMenus);
     }
 
     // 할인 전 총 주문 금액
@@ -53,6 +59,9 @@ public class Order {
         int totalDiscount = 0;
 
         for (Benefit benefit : benefits.keySet()) {
+            if (benefit.equals(Benefit.증정_이벤트)) {
+                continue;
+            }
             totalDiscount = totalDiscount + benefits.get(benefit);
         }
 
@@ -78,7 +87,7 @@ public class Order {
     public Badge getBadge() {
         int totalBenefit = getPriceOfTotalBenefits();
 
-        for (Badge badge : Badge.values() ) {
+        for (Badge badge : Badge.values()) {
             if (totalBenefit >= badge.getStandardPrice()) {
                 return badge;
             }
@@ -87,7 +96,12 @@ public class Order {
         return null;
     }
 
-    public int getBenefit(Benefit benefit) {
+    public List<Map.Entry<String, Integer>> getBenefits() {
+        return toEntryList(benefits);
+    }
+
+    @Deprecated
+    public int getAmountOfBenefit(Benefit benefit) {
         if (benefit.equals(Benefit.증정_이벤트) && isEligibleForFreebie()) {
             return Benefit.FREEBIE.getPrice();
         }
@@ -113,6 +127,7 @@ public class Order {
         weekdayPromotion();
         weekendPromotion();
         specialDiscount();
+        freebieEvent();
     }
 
     private DayOfWeek dayOfWeek() {
@@ -152,5 +167,17 @@ public class Order {
             return;
         }
         benefits.putIfAbsent(Benefit.특별_할인, Benefit.특별_할인.getDiscount());
+    }
+
+    private void freebieEvent() {
+        if (isEligibleForFreebie()) {
+            benefits.putIfAbsent(Benefit.증정_이벤트, Benefit.FREEBIE.getPrice());
+        }
+    }
+
+    private <T extends Enum<?>> List<Map.Entry<String, Integer>> toEntryList(Map<T, Integer> targetMap) {
+        return targetMap.entrySet().stream()
+                .map(e -> new AbstractMap.SimpleEntry<>(e.getKey().name(), e.getValue()))
+                .collect(Collectors.toList());
     }
 }
