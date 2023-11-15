@@ -50,6 +50,6 @@ public class OrderFactoryImpl implements OrderFactory {
 
     private boolean hasOnlyBeverage(Map<Menu, Integer> orderedMenus) {
         Set<Category> categories = orderedMenus.keySet().stream().map(Menu::getCategory).collect(Collectors.toSet());
-        return categories.size() == 1 && categories.contains(Category.BEVERAGE);
+        return categories.size() == 1 && categories.contains(Category.음료);
     }
 }

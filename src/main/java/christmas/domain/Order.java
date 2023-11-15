@@ -38,7 +38,7 @@ public class Order {
     }
 
     // 할인 전 총 주문 금액
-    public int getOriginalPrice() {
+    public int getPriceBeforeDiscount() {
         int totalPrice = 0;
 
         for (Menu menu : orderedMenus.keySet()) {
@@ -60,12 +60,12 @@ public class Order {
     }
 
     // 할인 후 주문금액
-    public int getTotalPrice() {
-        return getOriginalPrice() - getTotalDiscount();
+    public int getPriceOfTotal() {
+        return getPriceBeforeDiscount() - getTotalDiscount();
     }
 
     // 총혜택 금액 = 할인 금액의 합계 + 증정 메뉴의 가격
-    public int getTotalBenefits() {
+    public int getPriceOfTotalBenefits() {
         int freebiePrice = 0;
 
         if (isEligibleForFreebie()) {
@@ -76,7 +76,7 @@ public class Order {
     }
 
     public Badge getBadge() {
-        int totalBenefit = getTotalBenefits();
+        int totalBenefit = getPriceOfTotalBenefits();
 
         for (Badge badge : Badge.values() ) {
             if (totalBenefit >= badge.getStandardPrice()) {
@@ -100,11 +100,11 @@ public class Order {
     }
 
     public boolean isEligibleForFreebie() {
-        return getOriginalPrice() >= Benefit.MINIMUM_PRICE_FOR_FREEBIE;
+        return getPriceBeforeDiscount() >= Benefit.MINIMUM_PRICE_FOR_FREEBIE;
     }
 
     private void init() {
-        if (getTotalPrice() < Benefit.MINIMUM_PRICE_FOR_PROMOTIONS) {
+        if (getPriceOfTotal() < Benefit.MINIMUM_PRICE_FOR_PROMOTIONS) {
             return;
         }
         if (this.today <= DATE_OF_CHRISTMAS) {
@@ -129,7 +129,7 @@ public class Order {
             return;
         }
         int discount = Benefit.평일_할인.getDiscount() * orderedMenus.keySet().stream()
-                .filter(m -> m.getCategory().equals(Category.DESSERT))
+                .filter(m -> m.getCategory().equals(Category.디저트))
                 .mapToInt(orderedMenus::get)
                 .sum();
         benefits.putIfAbsent(Benefit.평일_할인, discount);
@@ -140,7 +140,7 @@ public class Order {
             return;
         }
         int discount = Benefit.주말_할인.getDiscount() * orderedMenus.keySet().stream()
-                .filter(m -> m.getCategory().equals(Category.MAIN))
+                .filter(m -> m.getCategory().equals(Category.메인))
                 .mapToInt(orderedMenus::get)
                 .sum();
 

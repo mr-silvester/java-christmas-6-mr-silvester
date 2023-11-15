@@ -1,5 +1,5 @@
 package christmas.enums.menu;
 
 public enum Category {
-    APPETIZER, MAIN, DESSERT, BEVERAGE
+    에피타이저, 메인, 디저트, 음료
 }

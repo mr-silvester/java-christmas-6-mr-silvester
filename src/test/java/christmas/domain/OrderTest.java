@@ -3,6 +3,7 @@ package christmas.domain;
 import christmas.enums.Badge;
 import christmas.enums.Benefit;
 import christmas.enums.menu.Menu;
+
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -64,7 +65,7 @@ class OrderTest {
         Order order = new Order(25, orderedMenus);
 
         // when
-        int result = order.getOriginalPrice();
+        int result = order.getPriceBeforeDiscount();
         int expectedResult = Menu.크리스마스파스타.getPrice() * 2 + Menu.레드와인.getPrice();
 
         // then
@@ -204,15 +205,15 @@ class OrderTest {
                         Benefit.크리스마스_디데이_할인,
                         3400),
                 Arguments.of("적용 불가능한 혜택은 0 반환",
-                        Map.of(Menu.해산물파스타, 2, Menu.바비큐립, 2, Menu.샴페인,1),
+                        Map.of(Menu.해산물파스타, 2, Menu.바비큐립, 2, Menu.샴페인, 1),
                         Benefit.주말_할인,
                         0),
                 Arguments.of("증정 이벤트 적용 가능한 경우 증정 메뉴의 가격을 반환",
-                        Map.of(Menu.해산물파스타, 2, Menu.바비큐립, 3, Menu.샴페인,1),
+                        Map.of(Menu.해산물파스타, 2, Menu.바비큐립, 3, Menu.샴페인, 1),
                         Benefit.증정_이벤트,
                         Benefit.FREEBIE.getPrice()),
                 Arguments.of("증정 이벤트 적용 불가능한 경우 0원 반환",
-                        Map.of(Menu.해산물파스타, 1, Menu.샴페인,1),
+                        Map.of(Menu.해산물파스타, 1, Menu.샴페인, 1),
                         Benefit.증정_이벤트,
                         0)
         );

@@ -18,8 +18,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderFactory orderFactory;
 
     @Override
-    public Order createOrder(int date, String menusInput) {
-        return orderFactory.createOrder(date, parseMenus(menusInput));
+    public Order createOrder(int day, String menusInput) {
+        return orderFactory.createOrder(day, parseMenus(menusInput));
     }
 
     @Override

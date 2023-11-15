@@ -19,7 +19,7 @@ public class PriceExpressionBuilder implements ExpressionBuilder {
     public void ofTotalBenefits(int price) {
         String sign = "";
         if (price > 0) {
-            sign = "-";
+            sign = SIGN_OF_NEGATIVE;
         }
         this.output.append(sign).append(asMoney(price)).append(MONEY_UNIT);
         build();

@@ -27,12 +27,12 @@ public class ControllerImpl implements Controller {
         Order order = createOrder();
         console.print().messageOf().previewEvent(order.getDay());
         printOrderedMenus(order);
-        console.print().messageOf().originalTotalPrice().and().price().beforeDiscount(order.getOriginalPrice());
+        console.print().messageOf().priceBeforeDiscount().and().price().beforeDiscount(order.getPriceBeforeDiscount());
         printBenefits(order);
         console.print().messageOf().freebie().and().menuListOf().freebie(Benefit.FREEBIE.name(), order.isEligibleForFreebie());
-        console.print().messageOf().totalBenefits().and().price().ofTotalBenefits(order.getTotalBenefits());
-        console.print().messageOf().totalPrice().and().price().ofTotal(order.getTotalPrice());
-        console.print().messageOf().badge().and().nameOf().badge(order.getBadge().name()).orNone().build();
+        console.print().messageOf().priceOfTotalBenefits().and().price().ofTotalBenefits(order.getPriceOfTotalBenefits());
+        console.print().messageOf().priceOfTotal().and().price().ofTotal(order.getPriceOfTotal());
+        console.print().messageOf().badge().and().nameOf().badge(order.getBadge().name());
         console.close();
     }
 

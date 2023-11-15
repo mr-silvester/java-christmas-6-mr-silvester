@@ -25,7 +25,7 @@ public class MessageExpressionBuilder implements ExpressionBuilder {
         return this;
     }
 
-    public MessageExpressionBuilder originalTotalPrice() {
+    public MessageExpressionBuilder priceBeforeDiscount() {
         output.append("<할인 전 총주문 금액>");
         return this;
     }
@@ -40,12 +40,12 @@ public class MessageExpressionBuilder implements ExpressionBuilder {
         return this;
     }
 
-    public MessageExpressionBuilder totalBenefits() {
+    public MessageExpressionBuilder priceOfTotalBenefits() {
         output.append("<총혜택 금액>");
         return this;
     }
 
-    public MessageExpressionBuilder totalPrice() {
+    public MessageExpressionBuilder priceOfTotal() {
         output.append("<할인 후 예상 결제 금액>");
         return this;
     }

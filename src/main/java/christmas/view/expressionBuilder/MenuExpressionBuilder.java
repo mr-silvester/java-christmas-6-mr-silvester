@@ -32,14 +32,14 @@ public class MenuExpressionBuilder implements ExpressionBuilder {
         if (this.output.isEmpty()) {
             return this;
         }
-        if (!this.output.toString().endsWith("\n")) {
-            this.output.append("\n");
+        if (!this.output.toString().endsWith(NEWLINE)) {
+            this.output.append(NEWLINE);
         }
         return this;
     }
 
     public MenuExpressionBuilder orNothing() {
-        if (this.output.toString().replace("\n", "").isEmpty()) {
+        if (this.output.toString().replace(NEWLINE, "").isEmpty()) {
             this.output.setLength(0);
             this.output.append(NOTHING_TO_PRINT);
         }
