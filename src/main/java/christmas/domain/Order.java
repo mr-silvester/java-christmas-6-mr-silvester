@@ -124,10 +124,10 @@ public class Order {
         if (this.today <= DATE_OF_CHRISTMAS) {
             christmasDayPromotion();
         }
-        weekdayPromotion();
-        weekendPromotion();
-        specialDiscount();
-        freebieEvent();
+        applyWeekdayPromotion();
+        applyWeekendPromotion();
+        applySpecialDiscount();
+        applyFreebieEvent();
     }
 
     private DayOfWeek dayOfWeek() {
@@ -139,7 +139,7 @@ public class Order {
         benefits.putIfAbsent(Benefit.크리스마스_디데이_할인, discount);
     }
 
-    private void weekdayPromotion() {
+    private void applyWeekdayPromotion() {
         if (!Benefit.DAYS_OF_WEEKDAY_PROMOTION.contains(dayOfWeek())) {
             return;
         }
@@ -153,7 +153,7 @@ public class Order {
         benefits.putIfAbsent(Benefit.평일_할인, discount);
     }
 
-    private void weekendPromotion() {
+    private void applyWeekendPromotion() {
         if (!Benefit.DAYS_OF_WEEKEND_PROMOTION.contains(dayOfWeek())) {
             return;
         }
@@ -167,14 +167,14 @@ public class Order {
         benefits.putIfAbsent(Benefit.주말_할인, discount);
     }
 
-    private void specialDiscount() {
+    private void applySpecialDiscount() {
         if (!dayOfWeek().equals(DayOfWeek.SUNDAY) && today != DATE_OF_CHRISTMAS) {
             return;
         }
         benefits.putIfAbsent(Benefit.특별_할인, Benefit.특별_할인.getDiscount());
     }
 
-    private void freebieEvent() {
+    private void applyFreebieEvent() {
         if (isEligibleForFreebie()) {
             benefits.putIfAbsent(Benefit.증정_이벤트, Benefit.FREEBIE.getPrice());
         }

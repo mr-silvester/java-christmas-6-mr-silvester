@@ -3,11 +3,8 @@ package christmas.controller;
 import christmas.context.annotation.Component;
 import christmas.domain.Order;
 import christmas.enums.Benefit;
-import christmas.enums.menu.Menu;
 import christmas.service.OrderService;
 import christmas.view.console.Console;
-import christmas.view.expressionBuilder.BenefitExpressionBuilder;
-import christmas.view.expressionBuilder.MenuExpressionBuilder;
 
 import java.util.function.Supplier;
 
@@ -25,7 +22,7 @@ public class ControllerImpl implements Controller {
     public void run() {
         console.print().messageOf().beginning();
         Order order = createOrder();
-        console.print().messageOf().previewEvent(order.getDay());
+        console.print().messageOf().previewEventBenefits(order.getDay());
         console.print().messageOf().orderedMenus().and().menuListOf().menus(order.getOrderedMenus());
         console.print().messageOf().priceBeforeDiscount().and().price().beforeDiscount(order.getPriceBeforeDiscount());
         console.print().messageOf().benefits().and().benefitListOf().benefits(order.getBenefits());
