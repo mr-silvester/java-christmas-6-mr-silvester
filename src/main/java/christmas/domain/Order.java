@@ -147,6 +147,9 @@ public class Order {
                 .filter(m -> m.getCategory().equals(Category.디저트))
                 .mapToInt(orderedMenus::get)
                 .sum();
+        if (discount == 0) {
+            return;
+        }
         benefits.putIfAbsent(Benefit.평일_할인, discount);
     }
 
@@ -158,7 +161,9 @@ public class Order {
                 .filter(m -> m.getCategory().equals(Category.메인))
                 .mapToInt(orderedMenus::get)
                 .sum();
-
+        if (discount == 0) {
+            return;
+        }
         benefits.putIfAbsent(Benefit.주말_할인, discount);
     }
 
