@@ -6,4 +6,8 @@ public interface TypedBeanRegistry {
     List<Class<?>> getDefinedInterfaces();
 
     List<Class<?>> getDefinedSuperClasses();
+
+    void registerInterface(Class<?> target);
+
+    void registerSuperClass(Class<?> target);
 }

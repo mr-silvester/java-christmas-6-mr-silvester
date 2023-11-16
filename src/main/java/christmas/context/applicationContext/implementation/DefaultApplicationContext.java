@@ -1,4 +1,4 @@
-package christmas.context.implementation;
+package christmas.context.applicationContext.implementation;
 
 import christmas.context.applicationContext.ApplicationContext;
 import christmas.context.annotation.Component;
@@ -131,6 +131,30 @@ public class DefaultApplicationContext implements ApplicationContext {
         return getOrRegisterBean(beanType);
     }
 
+    @Override
+    public void registerInterface(Class<?> target) {
+        Class<?>[] interfaces = target.getInterfaces();
+
+        if (interfaces.length != 0) {
+            if (interfaceRegistry.containsKey(interfaces[0])) {
+                throw new BeansException(BeansException.ALREADY_REGISTERED_INTERFACE, interfaces[0]);
+            }
+
+            interfaceRegistry.put(interfaces[0], target);
+        }
+    }
+
+    @Override
+    public void registerSuperClass(Class<?> target) {
+        Class<?> superClass = target.getSuperclass();
+        if (superClass != Object.class) {
+            if (superClassRegistry.containsKey(superClass)) {
+                throw new BeansException(BeansException.ALREADY_REGISTERED_SUPERCLASS, superClass);
+            }
+            superClassRegistry.put(superClass, target);
+        }
+    }
+
     private Object getOrRegisterBean(Class<?> requiredType) {
         if (beanNameRegistry.containsKey(requiredType)) {
             String beanName = beanNameRegistry.get(requiredType);
@@ -189,28 +213,6 @@ public class DefaultApplicationContext implements ApplicationContext {
 
     private List<Class<?>> getScannedClassesWithAnnotation(Class<? extends Annotation> annotation) {
         return scannedClasses.stream().filter(c -> c.isAnnotationPresent(annotation)).toList();
-    }
-
-    private void registerInterface(Class<?> target) {
-        Class<?>[] interfaces = target.getInterfaces();
-
-        if (interfaces.length != 0) {
-            if (interfaceRegistry.containsKey(interfaces[0])) {
-                throw new BeansException(BeansException.ALREADY_REGISTERED_INTERFACE, interfaces[0]);
-            }
-
-            interfaceRegistry.put(interfaces[0], target);
-        }
-    }
-
-    private void registerSuperClass(Class<?> target) {
-        Class<?> superClass = target.getSuperclass();
-        if (superClass != Object.class) {
-            if (superClassRegistry.containsKey(superClass)) {
-                throw new BeansException(BeansException.ALREADY_REGISTERED_SUPERCLASS, superClass);
-            }
-            superClassRegistry.put(superClass, target);
-        }
     }
 
     private void init() {

@@ -1,7 +1,7 @@
 package christmas.loader;
 
 import christmas.context.applicationContext.ApplicationContext;
-import christmas.context.implementation.DefaultApplicationContext;
+import christmas.context.applicationContext.implementation.DefaultApplicationContext;
 import christmas.controller.Controller;
 
 public class ApplicationLoader {
