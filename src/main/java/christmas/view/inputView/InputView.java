@@ -1,6 +1,7 @@
 package christmas.view.inputView;
 
 import camp.nextstep.edu.missionutils.Console;
+
 import christmas.context.annotation.Component;
 import christmas.enums.error.Error;
 

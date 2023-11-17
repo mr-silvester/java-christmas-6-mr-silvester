@@ -1,21 +1,13 @@
 package christmas.domain;
 
-import christmas.enums.Badge;
-import christmas.enums.Benefit;
-import christmas.enums.menu.Category;
+import christmas.enums.benefit.Badge;
+import christmas.enums.benefit.Benefit;
 import christmas.enums.menu.Menu;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Order {
-    private static final int THIS_YEAR = 2023;
-    private static final Month THIS_MONTH = Month.DECEMBER;
-    private static final int DATE_OF_CHRISTMAS = 25;
-
     public Order(int today, Map<Menu, Integer> orderedMenus) {
         this.today = today;
         this.orderedMenus = Map.copyOf(orderedMenus);
@@ -30,15 +22,6 @@ public class Order {
         return this.today;
     }
 
-    @Deprecated
-    public int getQuantityOf(Menu menu) {
-        if (orderedMenus.containsKey(menu)) {
-            return orderedMenus.get(menu);
-        }
-
-        return 0;
-    }
-
     public List<Map.Entry<String, Integer>> getOrderedMenus() {
         return toEntryList(orderedMenus);
     }
@@ -48,7 +31,7 @@ public class Order {
         int totalPrice = 0;
 
         for (Menu menu : orderedMenus.keySet()) {
-            totalPrice = totalPrice + menu.getPrice() * orderedMenus.get(menu);
+            totalPrice = totalPrice + menu.price() * orderedMenus.get(menu);
         }
 
         return totalPrice;
@@ -78,7 +61,7 @@ public class Order {
         int freebiePrice = 0;
 
         if (isEligibleForFreebie()) {
-            freebiePrice = Benefit.FREEBIE.getPrice();
+            freebiePrice = Benefit.FREEBIE.price();
         }
 
         return getTotalDiscount() + freebiePrice;
@@ -100,19 +83,6 @@ public class Order {
         return toEntryList(benefits);
     }
 
-    @Deprecated
-    public int getAmountOfBenefit(Benefit benefit) {
-        if (benefit.equals(Benefit.증정_이벤트) && isEligibleForFreebie()) {
-            return Benefit.FREEBIE.getPrice();
-        }
-
-        if (benefits.containsKey(benefit)) {
-            return benefits.get(benefit);
-        }
-
-        return 0;
-    }
-
     public boolean isEligibleForFreebie() {
         return getPriceBeforeDiscount() >= Benefit.MINIMUM_PRICE_FOR_FREEBIE;
     }
@@ -121,62 +91,17 @@ public class Order {
         if (getPriceOfTotal() < Benefit.MINIMUM_PRICE_FOR_PROMOTIONS) {
             return;
         }
-        if (this.today <= DATE_OF_CHRISTMAS) {
-            christmasDayPromotion();
-        }
-        applyWeekdayPromotion();
-        applyWeekendPromotion();
-        applySpecialDiscount();
-        applyFreebieEvent();
+
+        applyPromotions();
     }
 
-    private DayOfWeek dayOfWeek() {
-        return LocalDateTime.of(THIS_YEAR, THIS_MONTH, today, 0, 0).getDayOfWeek();
-    }
+    private void applyPromotions() {
+        for (Benefit benefit : Benefit.values()) {
+            int amountOfBenefit = benefit.promotion().apply(today, orderedMenus);
 
-    private void christmasDayPromotion() {
-        int discount = Benefit.크리스마스_디데이_할인.getDiscount() + Benefit.CHRISTMAS_D_DAY_DISCOUNT_PER_DAY * (today - 1);
-        benefits.putIfAbsent(Benefit.크리스마스_디데이_할인, discount);
-    }
-
-    private void applyWeekdayPromotion() {
-        if (!Benefit.DAYS_OF_WEEKDAY_PROMOTION.contains(dayOfWeek())) {
-            return;
-        }
-        int discount = Benefit.평일_할인.getDiscount() * orderedMenus.keySet().stream()
-                .filter(m -> m.getCategory().equals(Category.디저트))
-                .mapToInt(orderedMenus::get)
-                .sum();
-        if (discount == 0) {
-            return;
-        }
-        benefits.putIfAbsent(Benefit.평일_할인, discount);
-    }
-
-    private void applyWeekendPromotion() {
-        if (!Benefit.DAYS_OF_WEEKEND_PROMOTION.contains(dayOfWeek())) {
-            return;
-        }
-        int discount = Benefit.주말_할인.getDiscount() * orderedMenus.keySet().stream()
-                .filter(m -> m.getCategory().equals(Category.메인))
-                .mapToInt(orderedMenus::get)
-                .sum();
-        if (discount == 0) {
-            return;
-        }
-        benefits.putIfAbsent(Benefit.주말_할인, discount);
-    }
-
-    private void applySpecialDiscount() {
-        if (!dayOfWeek().equals(DayOfWeek.SUNDAY) && today != DATE_OF_CHRISTMAS) {
-            return;
-        }
-        benefits.putIfAbsent(Benefit.특별_할인, Benefit.특별_할인.getDiscount());
-    }
-
-    private void applyFreebieEvent() {
-        if (isEligibleForFreebie()) {
-            benefits.putIfAbsent(Benefit.증정_이벤트, Benefit.FREEBIE.getPrice());
+            if (amountOfBenefit != 0) {
+                benefits.putIfAbsent(benefit, amountOfBenefit);
+            }
         }
     }
 

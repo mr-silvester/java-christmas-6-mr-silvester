@@ -1,18 +1,21 @@
-package christmas.enums;
+package christmas.enums.benefit;
 
+import christmas.enums.benefit.PromotionFunction;
 import christmas.enums.menu.Menu;
 
 import java.time.DayOfWeek;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 public enum Benefit {
-    크리스마스_디데이_할인(1000),
-    평일_할인(2023),
-    주말_할인(2023),
-    특별_할인(1000),
-    증정_이벤트(Menu.샴페인.getPrice());
+    크리스마스_디데이_할인(1000, PromotionFunction.christmasDayPromotion()),
+    평일_할인(2023, PromotionFunction.weekdayPromotion()),
+    주말_할인(2023, PromotionFunction.weekendPromotion()),
+    특별_할인(1000, PromotionFunction.specialDiscount()),
+    증정_이벤트(Menu.샴페인.price(), PromotionFunction.freebieEvent());
 
     public static final int MINIMUM_PRICE_FOR_FREEBIE = 120000;
 
@@ -30,13 +33,20 @@ public enum Benefit {
 
     public static final Menu FREEBIE = Menu.샴페인;
 
-    Benefit(int discount) {
+    Benefit(int discount, BiFunction<Integer, Map<Menu, Integer>, Integer> promotion) {
         this.discount = discount;
+        this.promotion = promotion;
     }
 
     private final int discount;
 
-    public int getDiscount() {
+    public int discount() {
         return discount;
     }
+
+    public BiFunction<Integer, Map<Menu, Integer>, Integer> promotion() {
+        return promotion;
+    }
+
+    public BiFunction<Integer, Map<Menu, Integer>, Integer> promotion;
 }

@@ -25,11 +25,11 @@ public enum Menu {
         this.category = category;
     }
 
-    public int getPrice() {
+    public int price() {
         return price;
     }
 
-    public Category getCategory() {
+    public Category category() {
         return this.category;
     }
 }

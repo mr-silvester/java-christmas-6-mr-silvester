@@ -1,4 +1,4 @@
-package christmas.enums;
+package christmas.enums.benefit;
 
 public enum Badge {
     산타(20000),

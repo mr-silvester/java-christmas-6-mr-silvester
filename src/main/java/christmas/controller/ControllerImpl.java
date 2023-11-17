@@ -2,7 +2,7 @@ package christmas.controller;
 
 import christmas.context.annotation.Component;
 import christmas.domain.Order;
-import christmas.enums.Benefit;
+import christmas.enums.benefit.Benefit;
 import christmas.service.OrderService;
 import christmas.view.console.Console;
 

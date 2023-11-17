@@ -1,6 +1,6 @@
 package christmas.domain;
 
-import christmas.enums.Badge;
+import christmas.enums.benefit.Badge;
 import christmas.enums.menu.Menu;
 
 import org.junit.jupiter.api.Disabled;
@@ -59,7 +59,7 @@ class OrderTest {
 
         // when
         int result = order.getPriceBeforeDiscount();
-        int expectedResult = Menu.크리스마스파스타.getPrice() * 2 + Menu.레드와인.getPrice();
+        int expectedResult = Menu.크리스마스파스타.price() * 2 + Menu.레드와인.price();
 
         // then
         assertThat(result).isEqualTo(expectedResult);
