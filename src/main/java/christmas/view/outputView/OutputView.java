@@ -8,46 +8,27 @@ import christmas.view.expressionBuilder.PriceExpressionBuilder;
 
 @Component
 public class OutputView {
-    private final StringBuilder output;
+    public MenuExpressionBuilder menuList() {
+        return new MenuExpressionBuilder(this);
+    }
 
-    public OutputView() {
-        this.output = new StringBuilder();
+    public BenefitExpressionBuilder benefitList() {
+        return new BenefitExpressionBuilder(this);
     }
 
     public MessageExpressionBuilder messageOf() {
         return new MessageExpressionBuilder(this);
     }
 
-    public MenuExpressionBuilder menuListOf() {
-        return new MenuExpressionBuilder(this, this.output);
-    }
-
-    public BenefitExpressionBuilder benefitListOf() {
-        return new BenefitExpressionBuilder(this, this.output);
-    }
-
     public PriceExpressionBuilder price() {
-        return new PriceExpressionBuilder(this, this.output);
+        return new PriceExpressionBuilder(this);
     }
 
-    public BenefitExpressionBuilder nameOf() {
-        return new BenefitExpressionBuilder(this, this.output);
+    public BenefitExpressionBuilder badge() {
+        return new BenefitExpressionBuilder(this);
     }
 
-    public OutputView merge(StringBuilder output) {
-        if (output.toString().endsWith("\n")) {
-            output.delete(output.length() - 1, output.length());
-        }
-        this.output.append(output);
-        System.out.print(this.output);
-        this.output.setLength(0);
-        System.out.println();
-        return this;
-    }
-
-    public void build() {
-        System.out.print(this.output);
-        output.setLength(0);
-        System.out.println();
+    public BenefitExpressionBuilder freebie() {
+        return new BenefitExpressionBuilder(this);
     }
 }

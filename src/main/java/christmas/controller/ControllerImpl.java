@@ -19,16 +19,16 @@ public class ControllerImpl implements Controller {
     private final OrderService orderService;
 
     public void run() {
-        console.print().messageOf().beginning();
+        console.print().messageOf().initial();
         Order order = createOrder();
         console.print().messageOf().previewEventBenefits(order.getDay())
-                .and().messageOf().orderedMenus().and().menuListOf().menus(order.getOrderedMenus())
-                .and().messageOf().priceBeforeDiscount().and().price().beforeDiscount(order.getPriceBeforeDiscount())
-                .and().messageOf().benefits().and().benefitListOf().benefits(order.getBenefits())
-                .and().messageOf().freebie().and().menuListOf().freebie(Benefit.FREEBIE.name(), order.isEligibleForFreebie())
-                .and().messageOf().priceOfTotalBenefits().and().price().ofTotalBenefits(order.getPriceOfTotalBenefits())
-                .and().messageOf().priceOfTotal().and().price().ofTotal(order.getPriceOfTotal())
-                .and().messageOf().badge().and().nameOf().badge(order.getBadge().name()).build();
+                .and().menuList().of(order.getOrderedMenus())
+                .and().price().beforeDiscount(order.getPriceBeforeDiscount())
+                .and().benefitList().of(order.getBenefits())
+                .and().freebie().of(Benefit.FREEBIE.name(), order.isEligibleForFreebie())
+                .and().price().ofTotalBenefits(order.getPriceOfTotalBenefits())
+                .and().price().ofTotal(order.getPriceOfTotal())
+                .and().badge().of(order.getBadge().name());
         console.close();
     }
 

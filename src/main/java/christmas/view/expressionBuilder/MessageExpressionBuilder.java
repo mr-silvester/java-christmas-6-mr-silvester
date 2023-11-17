@@ -5,59 +5,21 @@ import christmas.view.outputView.OutputView;
 public class MessageExpressionBuilder implements ExpressionBuilder {
     public MessageExpressionBuilder(OutputView outputView) {
         this.outputView = outputView;
-        this.output = new StringBuilder();
     }
 
     private final OutputView outputView;
-    private final StringBuilder output;
 
-    public void beginning() {
-        System.out.println(this.output.append("안녕하세요! 우테코 식당 12월 이벤트 플래너입니다."));
+    public void initial() {
+        System.out.println("안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.");
     }
 
     public MessageExpressionBuilder previewEventBenefits(int date) {
-        this.output.append("12월 ").append(date).append("일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!")
-                .append(NEWLINE)
-                .append(NEWLINE);
-        return this;
-    }
-
-    public MessageExpressionBuilder orderedMenus() {
-        output.append("<주문 메뉴>");
-        return this;
-    }
-
-    public MessageExpressionBuilder priceBeforeDiscount() {
-        output.append("<할인 전 총주문 금액>");
-        return this;
-    }
-
-    public MessageExpressionBuilder freebie() {
-        output.append("<증정 메뉴>");
-        return this;
-    }
-
-    public MessageExpressionBuilder benefits() {
-        output.append("<혜택 내역>");
-        return this;
-    }
-
-    public MessageExpressionBuilder priceOfTotalBenefits() {
-        output.append("<총혜택 금액>");
-        return this;
-    }
-
-    public MessageExpressionBuilder priceOfTotal() {
-        output.append("<할인 후 예상 결제 금액>");
-        return this;
-    }
-
-    public MessageExpressionBuilder badge() {
-        output.append("<12월 이벤트 배지>");
+        System.out.println("12월 " + date + "일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!");
         return this;
     }
 
     public OutputView and() {
-        return this.outputView.merge(this.output);
+        System.out.println();
+        return this.outputView;
     }
 }
